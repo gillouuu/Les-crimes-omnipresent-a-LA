@@ -1,6 +1,6 @@
 source(file = "global.R")
 source(file = "Packages.R")
-library(shiny)
+
 
 # global.R
 library(ggplot2)
@@ -25,7 +25,7 @@ ui <- fluidPage(
                    br(),
                    br(),
                    h5("Sélectionnez l'ethnie"),
-                   checkboxGroupInput("ethnie","", choices = c("Latinos","Blancs","Noirs","Asiatiques","Autres","Non spécifié")),
+                   checkboxGroupInput("ethnie","", choices = c("Blancs"="W","Noirs"="B","Hispaniques"="H","Autres"="O","Non spécifié"="X")),
       ),
       
       mainPanel(
@@ -37,7 +37,9 @@ ui <- fluidPage(
         textOutput("filteredDataCount"),
         textOutput("percentageText"),
         # Ajout de l'emplacement pour le graphique à barres
-        plotOutput("crimeBarChart")
+        plotOutput("crimeBarChart"),
+        # Ajout de l'emplacement pour le nouveau graphique par zone
+        plotOutput("crimeAreaChart")
       )
     )
   )
@@ -49,8 +51,9 @@ library(shiny)
 server <- function(input, output) {
   filteredData <- reactive({
     subset_data <- subset(data,
-                          data$`Vict.Sex` %in% input$sexe &
-                            data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2])
+                          data$`Vict.Sex` >= input$sexe &
+                            data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2] &
+                            data$Vict.Descent >= input$ethnie)
     
     # Comptage des occurrences de chaque type de crime
     crime_counts <- table(subset_data$`Crm.Cd.Desc`)
@@ -59,7 +62,7 @@ server <- function(input, output) {
     top_crimes <- names(sort(crime_counts, decreasing = TRUE)[1:15])
     
     # Filtrer les données uniquement pour les 15 types de crime les plus fréquents
-    subset_data <- subset_data[subset_data$`Crm.Cd.Desc` %in% top_crimes, ]
+    subset_data <- subset_data[subset_data$`Crm.Cd.Desc` >= top_crimes, ]
     
     return(subset_data)
   })
@@ -80,7 +83,25 @@ server <- function(input, output) {
   output$crimeBarChart <- renderPlot({
     ggplot(filteredData(), aes(x = `Crm.Cd.Desc`)) +
       geom_bar() +
-      labs(title = "Répartition des crimes", x = "Type de Crime", y = "Nombre de Crimes")+
+      labs(title = "Répartition des crimes", x = "Type de Crime", y = "Nombre de Crimes") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
+  })
+  
+  # Nouvelle fonction réactive pour les données filtrées par zone
+  filteredDataByArea <- reactive({
+    subset_data <- subset(data,
+                          data$`Vict.Sex` >= input$sexe &
+                            data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2] &
+                            data$Vict.Descent >= input$ethnie)
+    
+    return(subset_data)
+  })
+  
+  # Nouvelle sortie de graphique pour la répartition des crimes par zone
+  output$crimeAreaChart <- renderPlot({
+    ggplot(filteredDataByArea(), aes(x = `AREA.NAME`)) +
+      geom_bar(position = "stack") +
+      labs(title = "Répartition des crimes par zone", x = "Zone", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
   })
 }
