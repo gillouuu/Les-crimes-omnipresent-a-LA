@@ -2,56 +2,62 @@ source(file = "global.R")
 source(file = "Packages.R")
 
 
-# global.R
-library(ggplot2)
-
-# Packages.R
-# Assurez-vous d'avoir toutes les bibliothèques nécessaires installées et chargées ici
-
-# ui.R
 ui <- fluidPage(
   useShinyjs(),  # Chargement de shinyjs
   div(
     h1("Les crimes à LA en fonction des victimes", align = "center"),
+    
+    # Widget pour la sélection de la victime
     sidebarLayout(
-      sidebarPanel(width = 3,
-                   h3("Sélectionnez la victime"),
-                   h5("Sélectionnez le sexe"),
-                   checkboxGroupInput("sexe", "", choices = c("Homme"="M","Femme"="F","Autre"="X")),
-                   br(),
-                   br(),
-                   h5("Sélectionnez l'âge"),
-                   sliderInput("age","",0,120,c(25,75)),
-                   br(),
-                   br(),
-                   h5("Sélectionnez l'ethnie"),
-                   checkboxGroupInput("ethnie","", choices = c("Blancs"="W","Noirs"="B","Hispaniques"="H","Autres"="O","Non spécifié"="X")),
+      sidebarPanel(
+        h3("Sélectionnez la victime"),
+        h5("Sélectionnez le sexe"),
+        checkboxGroupInput("sexe", "", choices = c("Homme"="M","Femme"="F","Autre"="X","Non spécifié"="H")),
+        br(),
+        br(),
+        h5("Sélectionnez l'âge"),
+        sliderInput("age","",0,120,c(25,75)),
+        br(),
+        br(),
+        h5("Sélectionnez l'ethnie"),
+        checkboxGroupInput("ethnie","", choices = c("Blancs"="W","Noirs"="B","Hispaniques"="H","Autres"="O","Non spécifié"="X")),
       ),
-      
       mainPanel(
-        h4("Nombre total de crimes commis sur la victime en question:"),
-        # Utilisation d'un KPI
-        infoBox("Total de crimes", value = textOutput("totalCrimesText")),
-        textOutput("selectedFilters"),
-        textOutput("uniqueSexValues"),
-        textOutput("filteredDataCount"),
-        textOutput("percentageText"),
-        # Ajout de l'emplacement pour le graphique à barres
-        plotOutput("crimeBarChart"),
-        # Ajout de l'emplacement pour le nouveau graphique par zone
-        plotOutput("crimeAreaChart"),
+        # Onglets principaux
+        tabsetPanel(
+          id = "onglets",  # Identifiant pour les onglets
+          type = "tabs",  # Onglets horizontaux
+          
+          # Onglet 1 : Statistiques (Nombre de crimes et pourcentage)
+          tabPanel("Statistiques",
+                   textOutput("totalCrimesText"),
+                   textOutput("percentageText")
+          ),
+          
+          # Onglet 2 : Graphique à barres
+          tabPanel("Graphique des crimes",
+                   plotOutput("crimeBarChart")
+          ),
+          
+          # Onglet 3 : Graphique par Zone
+          tabPanel("Graphique des zones",
+                   plotOutput("crimeAreaChart")
+          )
+        )
       )
     )
   )
 )
 
-
-server <- function(input, output) {
+# server.R
+server <- function(input, output, session) {
+  
+  # Résultats basés sur la sélection
   filteredData <- reactive({
     subset_data <- subset(data,
-                          data$`Vict.Sex` >= input$sexe &
+                          data$`Vict.Sex` %in% input$sexe &
                             data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2] &
-                            data$Vict.Descent >= input$ethnie)
+                            data$Vict.Descent %in% input$ethnie)
     
     # Comptage des occurrences de chaque type de crime
     crime_counts <- table(subset_data$`Crm.Cd.Desc`)
@@ -67,13 +73,13 @@ server <- function(input, output) {
   
   output$totalCrimesText <- renderText({
     totalCrimes <- nrow(filteredData())
-    paste(totalCrimes)
+    paste("Nombre total de crimes commis sur la victime en question :", totalCrimes)
   })
   
   output$percentageText <- renderText({
     totalCrimes <- nrow(filteredData())
     totalRowsFiltered <- nrow(data[data$`Vict.Age` != -2 & data$`Vict.Sex` != "H",])
-    percentage <- (totalCrimes / 735648) * 100
+    percentage <- (totalCrimes / 543934) * 100
     paste("Pourcentage des crimes sélectionnés par rapport au total :", round(percentage, 2), "%")
   })
   
@@ -88,9 +94,9 @@ server <- function(input, output) {
   # Nouvelle fonction réactive pour les données filtrées par zone
   filteredDataByArea <- reactive({
     subset_data <- subset(data,
-                          data$`Vict.Sex` >= input$sexe &
+                          data$`Vict.Sex` %in% input$sexe &
                             data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2] &
-                            data$Vict.Descent >= input$ethnie)
+                            data$Vict.Descent %in% input$ethnie)
     
     return(subset_data)
   })
@@ -102,12 +108,11 @@ server <- function(input, output) {
       labs(title = "Répartition des crimes par zone", x = "Zone", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
   })
-  
-  
 }
 
 # shinyApp
 shinyApp(ui = ui, server = server)
+
 
 
 
