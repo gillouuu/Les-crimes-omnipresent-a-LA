@@ -39,14 +39,12 @@ ui <- fluidPage(
         # Ajout de l'emplacement pour le graphique à barres
         plotOutput("crimeBarChart"),
         # Ajout de l'emplacement pour le nouveau graphique par zone
-        plotOutput("crimeAreaChart")
+        plotOutput("crimeAreaChart"),
       )
     )
   )
 )
 
-# server.R
-library(shiny)
 
 server <- function(input, output) {
   filteredData <- reactive({
@@ -62,7 +60,7 @@ server <- function(input, output) {
     top_crimes <- names(sort(crime_counts, decreasing = TRUE)[1:15])
     
     # Filtrer les données uniquement pour les 15 types de crime les plus fréquents
-    subset_data <- subset_data[subset_data$`Crm.Cd.Desc` >= top_crimes, ]
+    subset_data <- subset_data[subset_data$`Crm.Cd.Desc` %in% top_crimes, ]
     
     return(subset_data)
   })
@@ -104,6 +102,8 @@ server <- function(input, output) {
       labs(title = "Répartition des crimes par zone", x = "Zone", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
   })
+  
+  
 }
 
 # shinyApp
