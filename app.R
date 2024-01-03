@@ -5,7 +5,7 @@ source(file = "Packages.R")
 ui <- fluidPage(
   useShinyjs(),  # Chargement de shinyjs
   div(
-    h1("Les crimes à LA en fonction des victimes", align = "center"),
+    h1("Les crimes à LA en fonction des victimes", align = "center",style = "text-decoration: underline;"),
     
     # Widget pour la sélection de la victime
     sidebarLayout(
@@ -31,7 +31,8 @@ ui <- fluidPage(
           # Onglet 1 : Statistiques (Nombre de crimes et pourcentage)
           tabPanel("Statistiques",
                    textOutput("totalCrimesText"),
-                   textOutput("percentageText")
+                   textOutput("percentageText"),
+                   img(src = "LA.png", height = 200, width = 200)
           ),
           
           # Onglet 2 : Graphique à barres
@@ -85,10 +86,11 @@ server <- function(input, output, session) {
   
   # Code pour créer le graphique à barres
   output$crimeBarChart <- renderPlot({
-    ggplot(filteredData(), aes(x = `Crm.Cd.Desc`)) +
+    ggplot(filteredData(), aes(x = `Crm.Cd.Desc`,fill = `Crm.Cd.Desc`)) +
       geom_bar() +
       labs(title = "Répartition des crimes", x = "Type de Crime", y = "Nombre de Crimes") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")  # Incliner les étiquettes sous les barres
   })
   
   # Nouvelle fonction réactive pour les données filtrées par zone
@@ -103,10 +105,11 @@ server <- function(input, output, session) {
   
   # Nouvelle sortie de graphique pour la répartition des crimes par zone
   output$crimeAreaChart <- renderPlot({
-    ggplot(filteredDataByArea(), aes(x = `AREA.NAME`)) +
+    ggplot(filteredDataByArea(), aes(x = `AREA.NAME`, fill =`AREA.NAME`)) +
       geom_bar(position = "stack") +
       labs(title = "Répartition des crimes par zone", x = "Zone", y = "Nombre de Crimes") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les étiquettes sous les barres
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")  # Incliner les étiquettes sous les barres
   })
 }
 
