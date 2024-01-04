@@ -32,16 +32,20 @@ Afin de répondre à cette problématique, j'ai décidé de faire un projet dans
   * La partie mainPanel renvoie les résultats en fonction des choix de l'utilisateur
 * La partie server correspond à ce qui se passe quand l'utilisateur fais ces choix et n'apparait pas sur l'application
 
+
 ### Exemple d'utilisation 
 
 ![ex_utilisation](https://github.com/gillouuu/Les-crimes-omnipresent-a-LA/assets/152622879/ea8cc58c-2364-4408-84ce-9e29b25a16a7)
 
-####Contact
+Contact
 Pour de plus amples informations, n'hésitez pas à me contacter 
 [mail](
 [LinkedIn](https://www.linkedin.com/in/corentin-gilles-bb25961b7/)
 
-
+#### Contact 
+Pour de plus amples informations n'hésitez pas à me contacter 
+Par mail : corentingilles81@gmail.com
+Via [LinkedIn](https://www.linkedin.com/in/corentin-gilles-bb25961b7/)
 
 
 
