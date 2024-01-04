@@ -21,8 +21,18 @@ Afin de répondre à cette problématique, j'ai décidé de faire un projet dans
 6) sélectionner tous les install.packages puis cliquer sur run pour installer tous les packages
 7) supprimer toutes les lignes install.packages
 8) sélectionner toutes les library pui éxécuter en cliquant sur run
-9) ouvrir le dossier global.R , sélectionner l'ensemble des lignes puis cliquer sur run
-10) ouvrir le fichier app.R sélectionner l'ensemble des lignes puis cliquer sur runApp pour lancer l'applicatio
+9) ouvrir le dossier global.R , remplacer le chemin vers la base de données par votre propre chemin
+10) sélectionner l'ensemble des lignes puis cliquer sur run
+11) ouvrir le fichier app.R sélectionner l'ensemble des lignes puis cliquer sur runApp pour lancer l'application
+
+
+### Structure de l'application 
+* La partie ui correspond à l'interface utilisateur, à savoir ce que l'utilisateur verra
+  * La partie sidebarPanel correspond à la partie de l'interface qui est en interaction avec l'utilisateur
+  * La partie mainPanel renvoie les résultats en fonction des choix de l'utilisateur
+* La partie server correspond à ce qui se passe quand l'utilisateur fais ces choix et n'apparait pas sur l'application
+
+
 
 
 
