@@ -1,4 +1,4 @@
-#source(file = "global.R")
+source(file = "global.R")
 source(file = "Packages.R")
 
 
@@ -139,7 +139,7 @@ server <- function(input, output, session) {
   
   
   output$crimeMonthChart <- renderPlot({
-    ggplot(filteredData(),aes(x = `month`, fill = `month`)) +
+    ggplot(filteredData(),aes(x = year, fill = year)) +
       geom_bar() +
       labs(title = "Répartition des crimes en fonction des mois", x = "month", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
