@@ -6,12 +6,14 @@ ui <- fluidPage(
   useShinyjs(),  # Chargement de shinyjs
   div(
     h1("Les crimes à LA en fonction des victimes", align = "center",style = "text-decoration: underline;"),
+    br(),
+    br(),
     
     # Widget pour la sélection de la victime
     sidebarLayout(
       sidebarPanel(
         h3("Sélectionnez la victime"),
-        h5("Sélectionnez le sexe"),
+        h5("Sélectionnez le sexe",icon = icon("gun")),
         checkboxGroupInput("sexe", "", choices = c("Homme"="M","Femme"="F","Autre"="X","Non spécifié"="H")),
         br(),
         br(),
@@ -30,18 +32,29 @@ ui <- fluidPage(
           
           # Onglet 1 : Statistiques (Nombre de crimes et pourcentage)
           tabPanel("Statistiques",
+                   br(),
                    textOutput("totalCrimesText"),
+                   br(),
                    textOutput("percentageText"),
-                   img(src = "LA.png", height = 200, width = 200)
+                   br(),
+                   style = "text-align: center;",
+                   img(src = "LA.png", height = 500, width = 500, align = "center")
           ),
           
           # Onglet 2 : Graphique à barres
           tabPanel("Graphique des crimes",
+                   br(),
+                   br(),
+                   br(),
                    plotOutput("crimeBarChart")
           ),
           
           # Onglet 3 : Graphique par Zone
           tabPanel("Graphique des zones",
+                   br(),
+                   br(),
+                   br(),
+                   br(),
                    plotOutput("crimeAreaChart")
           )
         )
@@ -86,12 +99,14 @@ server <- function(input, output, session) {
   
   # Code pour créer le graphique à barres
   output$crimeBarChart <- renderPlot({
-    ggplot(filteredData(), aes(x = `Crm.Cd.Desc`,fill = `Crm.Cd.Desc`)) +
+    ggplot(filteredData(), aes(x = `Crm.Cd.Desc`, fill = `Crm.Cd.Desc`)) +
       geom_bar() +
       labs(title = "Répartition des crimes", x = "Type de Crime", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position = "none")  # Incliner les étiquettes sous les barres
-  })
+            legend.position = "none") +
+      coord_cartesian(ylim = c(0, max(table(filteredData()$`Crm.Cd.Desc`)) * 1.8))  # Ajuster la plage y
+  }, height = 600)
+  
   
   # Nouvelle fonction réactive pour les données filtrées par zone
   filteredDataByArea <- reactive({
