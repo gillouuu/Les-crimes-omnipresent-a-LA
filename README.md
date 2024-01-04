@@ -1,30 +1,28 @@
 # Etude des crimes à Los Angeles
-## Principe du projet
+## A propos du projet
 
 Comme vous le savez sûrement, Los Angeles est une ville aux Etats-Unis avec un taux de criminalité très important. Grâce à un jeu de données très complet nous disposons de l'ensemble des crimes réalisés à LA sur plusieurs années.
 Cependant, cette base de données étant immense et très complexe, il est difficile de se faire une visualisation de tout cela.
 Afin de répondre à cette problématique, j'ai décidé de faire un projet dans lequel l'utilisateur pourrait se concentrer sur la victime afin de découvrir les différents crimes commis.
 
-### Fonctionnement de l'interface
+### Pour commencer 
+#### Les prérequis 
 
-Dans ce projet, vous allez retrouver une interface vous permettant d'identifier un type de victimes en particulier.
-Vous pourrez choisir : - le sexe des victimes
-                       - la tranche d'âge des victimes
-                       - l'ethnie des victimes
-Dans chaque cas, il est possible de faire une sélection multiple
-Une fois le choix réalisé, l'interface affichera des graphiques ainsi que des nombres correspondants à ce type de victime. 
-De cette façon et en modifiant votre choix il vous sera aisé de noter les différences entre les crimes commis suivant les victimes.
+    R (version 3.6.0 minimum)
+    RStudio
+    Shiny package
+
+#### Installation
+1) cloner le lien du repository :
+2) télécharger la base de données en cliquant sur ce lien [https://www.kaggle.com/datasets/bayusuarsa/crime-data-from-2020-to-present]
+3) ouvrir le projet avec l'application Rstudio
+4) ouvrir le fichier packages.R
+5) installer tous les packages présents dans les library (avec install.packages"*nom_du_packages*)
+6) sélectionner tous les install.packages puis cliquer sur run pour installer tous les packages
+7) supprimer toutes les lignes install.packages
+8) sélectionner toutes les library pui éxécuter en cliquant sur run
+9) ouvrir le dossier global.R , sélectionner l'ensemble des lignes puis cliquer sur run
+10) ouvrir le fichier app.R sélectionner l'ensemble des lignes puis cliquer sur runApp pour lancer l'applicatio
 
 
-*italique*
-
-**gras**
-
-### Exemple d'utilisation 
-
-Afin de mieux vous montrer ce à quoi ressemble l'interface, voici un exemple :
-Ici, nous allons sélectionner Homme pour le sexe, de 20 à 45 ans pour la tranche d'âge et blancs et asiatiques pour l'ethnie.
-En faisant ce choix, ce qui nous sera retourné sera : le nombre de crimes commis sur les hommes d'ethnies blanches ou asiatiques ayant entre 20 et 45 ans.
-Il y aura donc des nombres mais aussi des graphiques servant à spécifier les types de crimes commis, les lieux ou encore les dates à laquelle ces personnes sont le plus victimes de crimes.
-Ces nombres et ces graphiques seront accompagnés de statistiques nous permettant de comparer aux autres victimes.
 
