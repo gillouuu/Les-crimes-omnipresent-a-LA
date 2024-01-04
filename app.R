@@ -56,13 +56,21 @@ ui <- fluidPage(
                    br(),
                    br(),
                    plotOutput("crimeAreaChart"),
+                   br(),
+                   br(),
+                   leafletOutput("heatmap"),
+                   br(),
+                   br()
                    
           ),
           tabPanel("Répartition des mois", icon = icon("calendar"),
                    br(),
                    br(),
+                   plotOutput("crimeYearChart"),
+                   p(em("L'année 2023 représente moins de crimes car les données s'arrêtent avant la fin de l'année")),
                    br(),
-                   plotOutput("crimeMonthChart"),
+                   br(),
+                   plotOutput("crimeMonthChart")
           ),
         )
       )
@@ -138,12 +146,36 @@ server <- function(input, output, session) {
   
   
   
-  output$crimeMonthChart <- renderPlot({
+  output$crimeYearChart <- renderPlot({
     ggplot(filteredData(),aes(x = year, fill = year)) +
       geom_bar() +
-      labs(title = "Répartition des crimes en fonction des mois", x = "month", y = "Nombre de Crimes") +
+      labs(title = "Répartition des crimes en fonction des années ", x = "année", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.position = "none")
+  })
+  
+  output$crimeMonthChart <- renderPlot({
+    ggplot(filteredData(),aes(x = month, fill = `month`)) +
+      geom_bar() +
+      labs(title = "Répartition des crimes en fonction des mois ", x = "mois", y = "Nombre de Crimes") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")
+  })
+  
+  center_lat_h <- reactive({median(filteredData()$LAT)})
+  center_lon_h <- reactive({median(filteredData()$LON)})
+  output$heatmap <- renderLeaflet({
+    leaflet(filteredData()) %>%
+      addTiles()%>% 
+      addTiles() %>%
+      addHeatmap(
+        lat = ~LAT,
+        lng = ~LON,
+        blur = 20,
+        max = 0.2,
+        radius = 10
+      )    %>%
+      setView(lat = center_lat_h(), lng = center_lon_h(), zoom = 9)
   })
   
   

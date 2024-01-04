@@ -10,7 +10,8 @@ variables_data = names(data)
 
 
 data$DATE.OCC <- as.Date(data$DATE.OCC,format = "%m/%d/%Y")
-data$month<- lubridate::month(data$DATE.OCC) 
+data$month<- lubridate::month(data$DATE.OCC, label = TRUE) 
+
 
 data$year<- lubridate::year(data$DATE.OCC)
-
+data$year<-as.factor(data$year)
