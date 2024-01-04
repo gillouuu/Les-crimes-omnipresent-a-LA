@@ -13,17 +13,17 @@ Afin de répondre à cette problématique, j'ai décidé de faire un projet dans
     Shiny package
 
 #### Installation
-1) cloner le lien du repository :
-2) télécharger la base de données en cliquant sur ce [lien]( https://www.kaggle.com/datasets/bayusuarsa/crime-data-from-2020-to-present)
-3) ouvrir le projet avec l'application Rstudio
-4) ouvrir le fichier packages.R
-5) installer tous les packages présents dans les library (avec install.packages"*nom_du_packages*)
-6) sélectionner tous les install.packages puis cliquer sur run pour installer tous les packages
-7) supprimer toutes les lignes install.packages
-8) sélectionner toutes les library pui éxécuter en cliquant sur run
-9) ouvrir le dossier global.R , remplacer le chemin vers la base de données par votre propre chemin
-10) sélectionner l'ensemble des lignes puis cliquer sur run
-11) ouvrir le fichier app.R sélectionner l'ensemble des lignes puis cliquer sur runApp pour lancer l'application
+1) Cloner le lien du repository :
+2) Télécharger la base de données en cliquant sur ce [lien]( https://www.kaggle.com/datasets/bayusuarsa/crime-data-from-2020-to-present)
+3) Ouvrir le projet avec l'application Rstudio
+4) Ouvrir le fichier packages.R
+5) Installer tous les packages présents dans les library (avec install.packages"*nom_du_packages*)
+6) Sélectionner tous les install.packages puis cliquer sur run pour installer tous les packages
+7) Supprimer toutes les lignes install.packages
+8) Sélectionner toutes les library pui éxécuter en cliquant sur run
+10) Ouvrir le dossier global.R , remplacer le chemin vers la base de données par votre propre chemin
+11) Sélectionner l'ensemble des lignes puis cliquer sur run
+12) Ouvrir le fichier app.R sélectionner l'ensemble des lignes puis cliquer sur runApp pour lancer l'application
 
 
 ### Structure de l'application 
@@ -31,6 +31,11 @@ Afin de répondre à cette problématique, j'ai décidé de faire un projet dans
   * La partie sidebarPanel correspond à la partie de l'interface qui est en interaction avec l'utilisateur
   * La partie mainPanel renvoie les résultats en fonction des choix de l'utilisateur
 * La partie server correspond à ce qui se passe quand l'utilisateur fais ces choix et n'apparait pas sur l'application
+
+### Exemple d'utilisation 
+
+
+![ex_utilisation](https://github.com/gillouuu/Les-crimes-omnipresent-a-LA/assets/152622879/d5f1ed5d-f67c-4b77-830e-d6fd5f007e98)
 
 
 
