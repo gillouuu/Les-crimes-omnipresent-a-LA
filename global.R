@@ -5,3 +5,9 @@ print("data load")
 titre_appli = " analyse crime 2023"
 
 variables_data = names(data)
+
+
+data$DATE.OCC <- as.Date(data$DATE.OCC,format = "%m/%d/%Y")
+data$month<- lubridate::month(data$DATE.OCC)
+data$year<- lubridate::year(data$DATE.OCC)
+

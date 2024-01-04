@@ -1,4 +1,4 @@
-source(file = "global.R")
+#source(file = "global.R")
 source(file = "Packages.R")
 
 
@@ -13,7 +13,7 @@ ui <- fluidPage(
     sidebarLayout(
       sidebarPanel(
         h3("Sélectionnez la victime"),
-        h5("Sélectionnez le sexe",icon = icon("gun")),
+        h5("Sélectionnez le sexe"),
         checkboxGroupInput("sexe", "", choices = c("Homme"="M","Femme"="F","Autre"="X","Non spécifié"="H")),
         br(),
         br(),
@@ -31,7 +31,7 @@ ui <- fluidPage(
           type = "tabs",  # Onglets horizontaux
           
           # Onglet 1 : Statistiques (Nombre de crimes et pourcentage)
-          tabPanel("Statistiques",
+          tabPanel("Statistiques",icon = icon("percent"),
                    br(),
                    textOutput("totalCrimesText"),
                    br(),
@@ -42,7 +42,7 @@ ui <- fluidPage(
           ),
           
           # Onglet 2 : Graphique à barres
-          tabPanel("Graphique des crimes",
+          tabPanel("Graphique des crimes", icon = icon("gun"),
                    br(),
                    br(),
                    br(),
@@ -50,18 +50,26 @@ ui <- fluidPage(
           ),
           
           # Onglet 3 : Graphique par Zone
-          tabPanel("Graphique des zones",
+          tabPanel("Graphique des zones",icon = icon("chart-area"),
                    br(),
                    br(),
                    br(),
                    br(),
-                   plotOutput("crimeAreaChart")
-          )
+                   plotOutput("crimeAreaChart"),
+                   
+          ),
+          tabPanel("Répartition des mois", icon = icon("calendar"),
+                   br(),
+                   br(),
+                   br(),
+                   plotOutput("crimeMonthChart"),
+          ),
         )
       )
     )
   )
 )
+
 
 # server.R
 server <- function(input, output, session) {
@@ -72,6 +80,7 @@ server <- function(input, output, session) {
                           data$`Vict.Sex` %in% input$sexe &
                             data$`Vict.Age` >= input$age[1] & data$`Vict.Age` <= input$age[2] &
                             data$Vict.Descent %in% input$ethnie)
+    
     
     # Comptage des occurrences de chaque type de crime
     crime_counts <- table(subset_data$`Crm.Cd.Desc`)
@@ -104,7 +113,7 @@ server <- function(input, output, session) {
       labs(title = "Répartition des crimes", x = "Type de Crime", y = "Nombre de Crimes") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.position = "none") +
-      coord_cartesian(ylim = c(0, max(table(filteredData()$`Crm.Cd.Desc`)) * 1.8))  # Ajuster la plage y
+      coord_cartesian(ylim = c(0, max(table(filteredData()$`Crm.Cd.Desc`)) * 1.2))  # Ajuster la plage y
   }, height = 600)
   
   
@@ -126,6 +135,19 @@ server <- function(input, output, session) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.position = "none")  # Incliner les étiquettes sous les barres
   })
+  
+  
+  
+  output$crimeMonthChart <- renderPlot({
+    ggplot(filteredData(),aes(x = `month`, fill = `month`)) +
+      geom_bar() +
+      labs(title = "Répartition des crimes en fonction des mois", x = "month", y = "Nombre de Crimes") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")
+  })
+  
+  
+  
 }
 
 # shinyApp
