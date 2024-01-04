@@ -14,7 +14,7 @@ Afin de répondre à cette problématique, j'ai décidé de faire un projet dans
 
 #### Installation
 1) cloner le lien du repository :
-2) télécharger la base de données en cliquant sur ce lien [https://www.kaggle.com/datasets/bayusuarsa/crime-data-from-2020-to-present]
+2) télécharger la base de données en cliquant sur ce lien https://www.kaggle.com/datasets/bayusuarsa/crime-data-from-2020-to-present
 3) ouvrir le projet avec l'application Rstudio
 4) ouvrir le fichier packages.R
 5) installer tous les packages présents dans les library (avec install.packages"*nom_du_packages*)
